@@ -1,0 +1,79 @@
+{
+  "name": "typesearch: news of the last day",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "7d3c1a52-5b1e-4f0e-9a51-2f7a3c1d9e01",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "article",
+        "operation": "search",
+        "query": "inflation in Argentina",
+        "mode": "fast",
+        "maxResults": 20,
+        "output": "simplified",
+        "options": {
+          "days": 1,
+          "languages": "es, en"
+        }
+      },
+      "id": "0b6f2e1c-8d4a-4c3b-b7e2-5a9d1f3c6e02",
+      "name": "Search news",
+      "type": "n8n-nodes-typesearch.typesearch",
+      "typeVersion": 1,
+      "position": [220, 0],
+      "credentials": {
+        "typesearchApi": {
+          "id": "",
+          "name": "Typesearch API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c4a1e7f2-3b5d-4e8a-9c6f-1d2e3f4a5b03",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 0.8,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e9b8c7d6-5a4f-4e3d-8c2b-1a0f9e8d7c04",
+      "name": "Score 0.8 or more",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [440, 0]
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [[{ "node": "Search news", "type": "main", "index": 0 }]]
+    },
+    "Search news": {
+      "main": [[{ "node": "Score 0.8 or more", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

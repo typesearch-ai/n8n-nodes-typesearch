@@ -1,0 +1,82 @@
+{
+  "name": "n8n-nodes-typesearch",
+  "version": "0.1.0",
+  "description": "n8n node for typesearch: news search for AI agents and workflows, with a calibrated relevance score on every article. Search, article excerpts, similar coverage and index coverage.",
+  "license": "MIT",
+  "homepage": "https://typesearch.ai/docs/integrations/n8n",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "typesearch",
+    "news",
+    "news-api",
+    "news-search",
+    "search",
+    "ai-agent",
+    "ai-tool",
+    "media-monitoring"
+  ],
+  "author": {
+    "name": "typesearch",
+    "email": "support@typesearch.ai",
+    "url": "https://typesearch.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typesearch-ai/n8n-nodes-typesearch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/typesearch-ai/n8n-nodes-typesearch/issues"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "format": "prettier --write \"{credentials,nodes,test}/**/*.{ts,mts}\"",
+    "format:check": "prettier --check \"{credentials,nodes,test}/**/*.{ts,mts}\"",
+    "test": "vitest run",
+    "test:live": "TYPESEARCH_LIVE=1 vitest run test/live.test.mts",
+    "check:dist": "node scripts/check-dist.mjs",
+    "scan": "node scripts/scan.mjs",
+    "schemas": "node scripts/extract-schemas.mjs",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/TypesearchApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Typesearch/Typesearch.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.49.1",
+    "@types/node": "^22.18.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "eslint": "9.39.5",
+    "n8n-workflow": "2.40.1",
+    "prettier": "3.8.3",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

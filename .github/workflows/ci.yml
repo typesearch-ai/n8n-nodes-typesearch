@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Node 24: la versión LTS que usa n8n (y que piden las dependencias de desarrollo de @n8n/node-cli).
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint (n8n-node lint, strict mode)
+        run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - name: Tests against the fake API
+        run: npm test
+      - run: npm run build
+      - name: dist loads as n8n loads it
+        run: npm run check:dist
+      - run: npm pack --dry-run
+
+  scan:
+    name: n8n scanner (static analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Source and tarball, as @n8n/scan-community-package analyzes them
+        run: npm run scan

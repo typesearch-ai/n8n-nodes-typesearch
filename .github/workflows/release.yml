@@ -1,0 +1,50 @@
+# Publishes to npm when a GitHub release is published (tag v<version>), with npm provenance: n8n requires
+# it for verified community nodes since 1 May 2026 (https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+#
+# Trusted publishing (OIDC): no token is stored once the package exists on npm and this repository and
+# workflow are its trusted publisher (see PUBLICAR.md). The very first publish needs an npm token in the
+# NPM_TOKEN secret of the `npm` environment; delete it afterwards.
+#
+# This is what `n8n-node release` does in CI (lint, build, npm publish with provenance and RELEASE_MODE),
+# plus the tests and the scanner's analysis before publishing.
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # OIDC for trusted publishing and provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      # Trusted publishing needs npm 11.5.1 or later.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - name: The tag matches package.json
+        if: github.event_name == 'release'
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:dist
+      # The CI job already gates this; here a scanner install hiccup must not block a release.
+      - run: npm run scan
+        continue-on-error: true
+      # RELEASE_MODE lets the `prepublishOnly` guard of n8n-node (n8n-node prerelease) through.
+      - run: npm publish --provenance --access public
+        env:
+          RELEASE_MODE: 'true'
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

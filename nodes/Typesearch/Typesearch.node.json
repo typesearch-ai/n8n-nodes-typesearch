@@ -1,0 +1,19 @@
+{
+	"node": "n8n-nodes-typesearch.typesearch",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Utility", "Marketing"],
+	"alias": ["news", "news search", "articles", "headlines", "media monitoring", "press"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://typesearch.ai/docs/integrations/n8n#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://typesearch.ai/docs/integrations/n8n"
+			}
+		]
+	}
+}
