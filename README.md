@@ -49,7 +49,7 @@ Failed requests and cached results are free.
 | Parameter | | |
 | --- | --- | --- |
 | Query | required | What to look for, in any language: a topic, event, person, company or place (2 to 200 characters). |
-| Mode | `fast` | `ultra`: headlines only · `fast`: headlines and standfirsts, the quickest and cheapest · `normal`: also reads the best matches · `deep`: reads more and finds the topic in other words (can take about a minute). |
+| Mode | `fast` | `ultra`: headlines only, the cheapest · `fast`: headlines and standfirsts, just as quick · `normal`: also reads the best matches · `deep`: reads more and finds the topic in other words (can take about a minute). |
 | Max Results | `10` | 1 to 50. |
 | Output | Simplified | See [Output](#output). |
 

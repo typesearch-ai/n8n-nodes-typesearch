@@ -81,11 +81,11 @@ const modeProperty: INodeProperties = {
 	type: 'options',
 	displayOptions: { show: SEARCH_OR_SIMILAR },
 	options: [
-		{ name: 'Ultra', value: 'ultra', description: 'Judges headlines only' },
+		{ name: 'Ultra', value: 'ultra', description: 'Judges headlines only. The cheapest.' },
 		{
 			name: 'Fast',
 			value: 'fast',
-			description: 'Judges headlines and standfirsts. The quickest and cheapest.',
+			description: 'Judges headlines and standfirsts, just as quick',
 		},
 		{
 			name: 'Normal',
