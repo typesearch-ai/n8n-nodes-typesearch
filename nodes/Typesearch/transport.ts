@@ -32,13 +32,12 @@ export interface TypesearchRequest {
 	method: IHttpRequestMethods;
 	path: string;
 	body?: IDataObject;
-	qs?: IDataObject;
 	itemIndex: number;
 }
 
 export async function typesearchRequest(
 	this: IExecuteFunctions,
-	{ method, path, body, qs, itemIndex }: TypesearchRequest,
+	{ method, path, body, itemIndex }: TypesearchRequest,
 ): Promise<IDataObject> {
 	const credentials = await this.getCredentials<{ baseUrl?: string }>(CREDENTIAL, itemIndex);
 	const baseURL = (credentials.baseUrl || DEFAULT_BASE_URL).trim().replace(/\/+$/, '');
@@ -55,7 +54,6 @@ export async function typesearchRequest(
 		ignoreHttpStatusErrors: true,
 	};
 	if (body) options.body = body;
-	if (qs) options.qs = qs;
 
 	let response: FullResponse;
 	try {

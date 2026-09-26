@@ -7,8 +7,8 @@ All notable changes to `n8n-nodes-typesearch` are documented here. The format fo
 
 First release.
 
-- **typesearch** node with four operations: Search (`POST /v1/search`), Get Contents (`POST /v1/contents`),
-  Find Similar (`POST /v1/similar`) and Check Coverage (`GET /v1/sources`).
+- **typesearch** node with three operations: Search (`POST /v1/search`), Get Contents (`POST /v1/contents`)
+  and Find Similar (`POST /v1/similar`).
 - Search and Find Similar filters: days, published after and before, include and exclude domains, countries
   and languages; for Search, also highlights, dedupe and tone.
 - Output per article (simplified, raw or selected fields) or the full API response.

@@ -230,14 +230,3 @@ export async function getContents(this: IExecuteFunctions, i: number): Promise<I
 	});
 	return list.call(this, i, response, simplifyPage);
 }
-
-export async function checkCoverage(this: IExecuteFunctions, i: number): Promise<IDataObject[]> {
-	const domain = String(this.getNodeParameter('domain', i, '') ?? '').trim();
-	const response = await typesearchRequest.call(this, {
-		method: 'GET',
-		path: '/v1/sources',
-		...(domain ? { qs: { domain } } : {}),
-		itemIndex: i,
-	});
-	return [response];
-}

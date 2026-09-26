@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 
 const LIVE = 'https://api.typesearch.ai/v1/openapi.json';
-const NAMES = ['SearchRequest', 'SimilarRequest', 'ContentsRequest', 'SearchResponse', 'ContentsResponse', 'Sources', 'Source', 'Usage', 'Problem'];
+const NAMES = ['SearchRequest', 'SimilarRequest', 'ContentsRequest', 'SearchResponse', 'ContentsResponse', 'Usage', 'Problem'];
 
 const source = process.argv[2] ?? LIVE;
 const openapi = /^https?:\/\//.test(source)

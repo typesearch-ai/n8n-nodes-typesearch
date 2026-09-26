@@ -17,13 +17,12 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 import { nodeProperties } from './descriptions';
-import { checkCoverage, findSimilar, getContents, search } from './operations';
+import { findSimilar, getContents, search } from './operations';
 
 type Operation = (this: IExecuteFunctions, itemIndex: number) => Promise<IDataObject[]>;
 
 const OPERATIONS: Record<string, Record<string, Operation>> = {
 	article: { search, getContents, findSimilar },
-	source: { checkCoverage },
 };
 
 /** Lo que queda en el ítem cuando el nodo sigue ante errores. */
@@ -52,7 +51,7 @@ export class Typesearch implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
-			'Search recent news worldwide, with a relevance score on every article; get article excerpts, other coverage of a story and the index coverage',
+			'Search recent news worldwide, with a relevance score on every article; get article excerpts and other coverage of a story',
 		defaults: {
 			name: 'typesearch',
 		},

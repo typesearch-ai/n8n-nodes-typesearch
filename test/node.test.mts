@@ -7,7 +7,7 @@ import { NodeApiError, NodeOperationError, type IDataObject } from 'n8n-workflow
 import { Typesearch } from '../nodes/Typesearch/Typesearch.node.ts';
 import { toDate, toList, toUrlList } from '../nodes/Typesearch/operations.ts';
 import { VERSION } from '../nodes/Typesearch/version.ts';
-import { COVERAGE, FakeApi, KEY, article, problem, searchResponse } from './fake-api.mts';
+import { FakeApi, KEY, article, problem, searchResponse } from './fake-api.mts';
 import { runNode, type RunOptions } from './context.mts';
 
 const api = new FakeApi();
@@ -378,28 +378,12 @@ describe('find similar', () => {
 	});
 });
 
-describe('check coverage', () => {
-	test('without a domain: the index coverage, never a list of sources', async () => {
-		const { output } = await run({ resource: 'source', operation: 'checkCoverage' });
-		expect(api.last.method).toBe('GET');
-		expect(api.last.path).toBe('/v1/sources');
-		expect([...api.last.query.keys()]).toEqual([]);
-		expect(output).toHaveLength(1);
-		expect(output[0]!.json).toEqual(COVERAGE);
-	});
-
-	test('with a domain: whether it is covered', async () => {
-		const { output } = await run({
-			resource: 'source',
-			operation: 'checkCoverage',
-			domain: ' diarioejemplo.example ',
-		});
-		expect(api.last.query.get('domain')).toBe('diarioejemplo.example');
-		expect(output[0]!.json).toMatchObject({
-			object: 'source',
-			covered: true,
-			name: 'Diario Ejemplo',
-		});
+describe('no coverage operation', () => {
+	test('the index coverage is not part of the public API: a "source" resource is rejected, with no request', async () => {
+		const e = await failure({ resource: 'source', operation: 'checkCoverage' });
+		expect(e).toBeInstanceOf(NodeOperationError);
+		expect(e.message).toBe('The operation "checkCoverage" is not supported for "source"');
+		expect(api.requests).toHaveLength(0);
 	});
 });
 

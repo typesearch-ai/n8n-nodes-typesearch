@@ -7,7 +7,6 @@ import type { INodeProperties } from 'n8n-workflow';
 const SEARCH = { resource: ['article'], operation: ['search'] };
 const SIMILAR = { resource: ['article'], operation: ['findSimilar'] };
 const CONTENTS = { resource: ['article'], operation: ['getContents'] };
-const COVERAGE = { resource: ['source'], operation: ['checkCoverage'] };
 const SEARCH_OR_SIMILAR = { resource: ['article'], operation: ['search', 'findSimilar'] };
 
 export const resourceProperty: INodeProperties = {
@@ -15,10 +14,7 @@ export const resourceProperty: INodeProperties = {
 	name: 'resource',
 	type: 'options',
 	noDataExpression: true,
-	options: [
-		{ name: 'Article', value: 'article' },
-		{ name: 'Source', value: 'source' },
-	],
+	options: [{ name: 'Article', value: 'article' }],
 	default: 'article',
 };
 
@@ -53,23 +49,6 @@ export const operationProperties: INodeProperties[] = [
 			},
 		],
 		default: 'search',
-	},
-	{
-		displayName: 'Operation',
-		name: 'operation',
-		type: 'options',
-		noDataExpression: true,
-		displayOptions: { show: { resource: ['source'] } },
-		options: [
-			{
-				name: 'Check Coverage',
-				value: 'checkCoverage',
-				description:
-					'Check whether a news domain is in the typesearch index, or get the index coverage: how many sources and articles, by country and by language. Free.',
-				action: 'Check news index coverage',
-			},
-		],
-		default: 'checkCoverage',
 	},
 ];
 
@@ -398,19 +377,6 @@ const similarOptionsProperty: INodeProperties = {
 	],
 };
 
-// --- Check Coverage -------------------------------------------------------------------------------
-
-const domainProperty: INodeProperties = {
-	displayName: 'Domain',
-	name: 'domain',
-	type: 'string',
-	displayOptions: { show: COVERAGE },
-	default: '',
-	placeholder: 'e.g. example.com',
-	description:
-		'A news domain, to check whether it is covered. Leave empty to get the coverage of the whole index by country and language.',
-};
-
 // El orden es el de la pantalla: primero lo que se busca, después cómo y qué devuelve.
 export const nodeProperties: INodeProperties[] = [
 	resourceProperty,
@@ -418,7 +384,6 @@ export const nodeProperties: INodeProperties[] = [
 	queryProperty,
 	urlProperty,
 	urlsProperty,
-	domainProperty,
 	modeProperty,
 	maxResultsProperty,
 	articlesOutputProperty,

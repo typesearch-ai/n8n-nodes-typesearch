@@ -1,7 +1,7 @@
 /*
  * Contra la API de verdad: corre sólo con `npm run test:live` y TYPESEARCH_API_KEY en el entorno (con
  * `npm test` se saltea aunque haya clave, para no gastar sin querer). Gasta muy poco: una búsqueda `fast`
- * de 3 resultados y el contenido de una URL; la prueba de la credencial y la cobertura no cobran.
+ * de 3 resultados y el contenido de una URL; la prueba de la credencial no cobra.
  * TYPESEARCH_BASE_URL apunta a otra API (local o de prueba).
  */
 import { describe, expect, test } from 'vitest';
@@ -22,15 +22,6 @@ describe.skipIf(!apiKey)('live API', () => {
 		const res = await testCredential(credentials);
 		expect(res.statusCode).toBe(200);
 		expect(res.body.object).toBe('usage');
-	});
-
-	test('coverage (free)', async () => {
-		const { output } = await runNode(node, {
-			params: { resource: 'source', operation: 'checkCoverage' },
-			credentials,
-		});
-		expect(output[0]!.json.object).toBe('sources');
-		expect(output[0]!.json.total).toBeGreaterThan(0);
 	});
 
 	test('search, fast, 3 results', async () => {

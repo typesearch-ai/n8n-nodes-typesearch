@@ -2,8 +2,8 @@
 
 An [n8n](https://n8n.io) community node for [typesearch](https://typesearch.ai): news search for AI agents
 and workflows. Search recent news on any topic from outlets worldwide, each article with a calibrated
-relevance score, by country and language. Also gets short excerpts of article URLs, finds other coverage of
-a story, and checks the index coverage.
+relevance score, by country and language. Also gets short excerpts of article URLs and finds other coverage
+of a story.
 
 It works in regular workflows and as a tool of the **AI Agent** node.
 
@@ -42,7 +42,6 @@ Failed requests and cached results are free.
 | Article | **Search** | `POST /v1/search` | Recent news on a topic, judged by a relevance model. |
 | Article | **Get Contents** | `POST /v1/contents` | Title, standfirst, date, source and a short verbatim excerpt (up to 25 words) of up to 10 article URLs. Never the full text. |
 | Article | **Find Similar** | `POST /v1/similar` | Other articles about the same story as an article URL. |
-| Source | **Check Coverage** | `GET /v1/sources` | Whether a news domain is in the index, or how many sources and articles the index has by country and language. Free. |
 
 ### Search
 
@@ -61,6 +60,10 @@ Published After, Published Before, Tone (positive, neutral or negative toward th
 Lists take commas or new lines, or an array from an expression. A date without a time covers that whole day;
 a time without a time zone is read as UTC.
 
+The index covers news from 130+ countries in 30+ languages, and every article carries its source and link.
+Missing an outlet? Suggest it from the [dashboard](https://app.typesearch.ai) (**Suggest a source**) or write
+to support@typesearch.ai.
+
 ### Get Contents
 
 **URLs** (required): up to 10 article URLs, separated by commas or new lines. **Options → Query**: the excerpt is
@@ -70,11 +73,6 @@ then the one about the query, with a `relevance` score for how much the article 
 
 **URL** (required), Mode, Max Results and Output, like Search. **Options**: Countries, Days (7 by default),
 Exclude Domains (for example, the outlet of the original article), Include Domains, Languages.
-
-### Check Coverage
-
-**Domain** (optional): a news domain such as `example.com`. Empty: the coverage of the whole index by country
-and language. It never lists the sources.
 
 ## Output
 
@@ -129,8 +127,6 @@ typesearch*). For better choices, set **Description → Set Manually** and use t
   article covers it. Never returns the full text.
 - **Find Similar**: Find other news articles about the same story as a given article URL, across the index
   (the last 7 days by default).
-- **Check Coverage**: Check whether a news domain is in the typesearch index, or get the index coverage: how
-  many sources and articles, by country and by language. Free.
 
 Keep **Output** on Simplified (or Selected Fields) for agents: it is compact and saves tokens.
 

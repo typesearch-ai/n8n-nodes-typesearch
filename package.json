@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-typesearch",
   "version": "0.1.0",
-  "description": "n8n node for typesearch: news search for AI agents and workflows, with a calibrated relevance score on every article. Search, article excerpts, similar coverage and index coverage.",
+  "description": "n8n node for typesearch: news search for AI agents and workflows, with a calibrated relevance score on every article. Search, article excerpts and similar coverage.",
   "license": "MIT",
   "homepage": "https://typesearch.ai/docs/integrations/n8n",
   "keywords": [

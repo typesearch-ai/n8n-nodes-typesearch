@@ -71,12 +71,7 @@ describe('node description', () => {
 	test('every operation has an action (the tool description in n8n) and a description', () => {
 		const operations = description.properties.filter((p) => p.name === 'operation');
 		const options = operations.flatMap((p) => p.options as INodePropertyOptions[]);
-		expect(options.map((o) => o.value).sort()).toEqual([
-			'checkCoverage',
-			'findSimilar',
-			'getContents',
-			'search',
-		]);
+		expect(options.map((o) => o.value).sort()).toEqual(['findSimilar', 'getContents', 'search']);
 		for (const o of options) {
 			expect(o.action).toMatch(/^[A-Z][a-z]/);
 			expect((o.description ?? '').length).toBeGreaterThan(40);
@@ -113,6 +108,12 @@ describe('node description', () => {
 		);
 		const allowed = /(^|\.)(typesearch\.ai|n8n\.io|npmjs\.com|github\.com|example\.(com|org))$/;
 		expect(domains.filter((d) => !allowed.test(d))).toEqual([]);
+	});
+
+	test('the copy offers no index coverage: no /v1/sources, no source counts', () => {
+		const copy = JSON.stringify(description) + read('README.md') + read('package.json');
+		expect(copy).not.toMatch(/\/v1\/sources|check.?coverage|index coverage/i);
+		expect(copy).not.toMatch(/\d[\d,.]*\+?\s+(sources|outlets|articles indexed)/i);
 	});
 });
 

@@ -102,7 +102,7 @@ export function searchResponse(extra: Record<string, unknown> = {}) {
 		reference: null,
 		temporal: null,
 		site: null,
-		index: { sources: 3, articles: 1200, updated_at: '2026-09-22T14:05:02.000Z' },
+		index: null,
 		usage: {
 			tokens: 1840,
 			calls: 2,
@@ -160,18 +160,6 @@ function contentsResponse(urls: string[], query: string | undefined) {
 		usage: { tokens: 1320, calls: 1, cost_usd: 0.00022, duration_ms: 1840 },
 	});
 }
-
-export const COVERAGE = {
-	object: 'sources',
-	updated_at: '2026-09-22T14:05:02.000Z',
-	total: 1234,
-	articles: 567890,
-	by_country: [
-		{ country: 'AR', sources: 120 },
-		{ country: null, sources: 4 },
-	],
-	by_language: [{ language: 'es', sources: 900 }],
-};
 
 export const USAGE = {
 	object: 'usage',
@@ -340,26 +328,6 @@ export class FakeApi {
 		}
 		if (route === 'POST /v1/contents') return send(200, contentsResponse(body.urls, body.query));
 		if (route === 'GET /v1/usage') return send(200, conforms('Usage', USAGE));
-		if (route === 'GET /v1/sources') {
-			const domain = url.searchParams.get('domain');
-			if (domain === null) return send(200, conforms('Sources', COVERAGE));
-			if (domain === 'diarioejemplo.example') {
-				return send(
-					200,
-					conforms('Source', {
-						object: 'source',
-						domain,
-						covered: true,
-						name: 'Diario Ejemplo',
-						country: 'AR',
-						languages: ['es'],
-						articles: 1520,
-						last_refreshed_at: '2026-09-22T14:05:02.000Z',
-					}),
-				);
-			}
-			return send(200, conforms('Source', { object: 'source', domain, covered: false }));
-		}
 		return send(404, problem(404, 'not_found', 'Not found.'));
 	}
 }
